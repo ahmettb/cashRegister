@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: sales
+  datasource:
+    username: [your_username]
+    password: [password]
+    driver-class-name: org.postgresql.Driver
+    url: [database_url]
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: 8081
