@@ -4,11 +4,12 @@ package com.cashregister.sale.service;
 //import com.cashregister.product.repository.IProductRepository;
 
 import com.cashregister.sale.model.*;
+import com.cashregister.sale.model.dto.SaleItemRequestDto;
+import com.cashregister.sale.model.dto.SaleItemResponseDto;
+import com.cashregister.sale.model.dto.SalesInfoDto;
 import com.cashregister.sale.repository.ISaleItemRepository;
 import com.cashregister.sale.repository.ISalesRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

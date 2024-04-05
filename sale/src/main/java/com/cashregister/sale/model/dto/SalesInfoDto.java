@@ -1,4 +1,4 @@
-package com.cashregister.sale.model;
+package com.cashregister.sale.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;

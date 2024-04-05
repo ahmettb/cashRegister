@@ -1,6 +1,8 @@
 package com.cashregister.sale.service;
 
 import com.cashregister.sale.model.*;
+import com.cashregister.sale.model.dto.SaleItemRequestDto;
+import com.cashregister.sale.model.dto.SalesInfoDto;
 
 import java.util.List;
 

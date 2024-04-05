@@ -2,10 +2,10 @@ spring:
   application:
     name: sales
   datasource:
-    username: [your_username]
-    password: [password]
+    username: postgres
+    password: 123
     driver-class-name: org.postgresql.Driver
-    url: [database_url]
+    url: jdbc:postgresql://localhost:5432/cashregister
   jpa:
     hibernate:
       ddl-auto: update

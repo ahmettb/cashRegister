@@ -18,4 +18,9 @@ public class SalesInfo {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "salesInfo")
     private List<SaleItem> saleItemList;
+
+
+    @ManyToOne
+    @JoinColumn(name = "campaign_id",referencedColumnName = "id")
+    private Campaign campaign;
 }

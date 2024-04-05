@@ -29,6 +29,7 @@ public class Product {
     @JsonManagedReference
     private Category category;
 
+
    // @ManyToMany(mappedBy = "productList")
    // private List<SalesInfo> saleList;
 

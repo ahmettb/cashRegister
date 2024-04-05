@@ -30,7 +30,7 @@
 			<groupId>com.cashregister</groupId>
 			<artifactId>product</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<scope>test</scope>
+			<scope>import</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

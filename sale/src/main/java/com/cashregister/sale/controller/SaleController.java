@@ -1,10 +1,10 @@
 package com.cashregister.sale.controller;
 
 
-import com.cashregister.sale.model.*;
+import com.cashregister.sale.model.dto.SaleItemRequestDto;
+import com.cashregister.sale.model.dto.SalesInfoDto;
 import com.cashregister.sale.service.ISalesService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
