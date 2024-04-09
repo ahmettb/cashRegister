@@ -1,17 +1,5 @@
 spring:
   application:
-    name: management
-  datasource:
-    username: postgres
-    password: 123
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/cashregister
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-server:
-  port: 8083
-
+    name: usermanagement
+  config:
+    import: optional:configserver:http://localhost:9000

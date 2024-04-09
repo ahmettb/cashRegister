@@ -1,0 +1,29 @@
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+server:
+  port: 8001
+
+spring:
+  application:
+    name: report
+  config:
+    api-endpoints:
+      product-url: http://localhost:8001/api/v1/students
+      sale-url: http://localhost:8002/api/v1/students
+
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${db_url}
+    username: ${db_username}
+    password: ${db_password}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect

@@ -1,7 +1,6 @@
 
 package com.cashregister.product.model;
 
-import com.cashregister.sale.model.SalesInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;

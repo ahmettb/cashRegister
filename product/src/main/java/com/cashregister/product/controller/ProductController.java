@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/product")
+@RequestMapping("api/v1/product")
 public class ProductController {
 
     final ProductServiceImp productService;
@@ -30,6 +30,7 @@ public class ProductController {
 
 
     }
+
 
     @GetMapping("getAll")
     public ResponseEntity<List<Product>>saveProduct( )

@@ -1,5 +1,6 @@
 package com.cashregister.authentacition.configuration;
 
+import com.cashregister.authentacition.model.ERole;
 import com.cashregister.authentacition.service.UserDetailsServiceImpl;
 import jwt.AuthEntryPointJwt;
 import jwt.AuthTokenFilter;
@@ -77,7 +78,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/auth/**").permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers("api/user-management").hasAuthority(ERole.ROLE_ADMIN.name())
+                                .requestMatchers("api/v3/sale","api/v3/campaign").hasAnyAuthority(ERole.ROLE_KASIYER.name())
+                                .requestMatchers("api/v1/product/**").permitAll()
+                        .requestMatchers("api/v2/report/**").hasAnyAuthority(ERole.ROLE_MAGAZA_MUDUR.name())
+
+                        .anyRequest().authenticated()
                 );
 
         http.authenticationProvider(authenticationProvider());
