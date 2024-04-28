@@ -28,7 +28,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@EnableMethodSecurity
+@EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig {
 
@@ -72,25 +72,21 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        System.out.println("Filter chainde");
         http.csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/auth/**").permitAll()
-                                .requestMatchers("api/user-management").hasAuthority(ERole.ROLE_ADMIN.name())
-                                .requestMatchers("api/v3/sale","api/v3/campaign").hasAnyAuthority(ERole.ROLE_KASIYER.name())
-                                .requestMatchers("api/v1/product/**").permitAll()
-                        .requestMatchers("api/v2/report/**").hasAnyAuthority(ERole.ROLE_MAGAZA_MUDUR.name())
+                        auth.requestMatchers("/api/v6/auth/**").permitAll()
+                                .requestMatchers("/api/user-management").hasAnyAuthority(ERole.ROLE_KASIYER.name())
+                                .requestMatchers("/api/v3/sale","api/v3/campaign").hasAnyAuthority(ERole.ROLE_KASIYER.name())
+                                .requestMatchers("/api/v1/product/**").hasAnyAuthority(ERole.ROLE_KASIYER.name())
+                        .requestMatchers("/api/v2/report/**").hasAnyAuthority(ERole.ROLE_KASIYER.name())
 
                         .anyRequest().authenticated()
                 );
 
         http.authenticationProvider(authenticationProvider());
-
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
-
         return http.build();
     }
 

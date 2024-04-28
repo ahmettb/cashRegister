@@ -38,6 +38,11 @@ public class AuthService {
     JwtUtils jwtUtils;
 
 
+    public boolean validate(String token)
+    {
+        return jwtUtils.validateJwtToken(token);
+    }
+
     public void registerUser(SignupRequest signupRequest) throws Exception {
 
         if (!userRepository.findByUsername(signupRequest.getUsername()).isEmpty()) {
@@ -82,7 +87,6 @@ public class AuthService {
         if (user == null) {
             throw new Exception("User not found");
         }
-
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsername(), loginRequest.getPassword()

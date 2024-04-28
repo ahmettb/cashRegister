@@ -1,3 +1,8 @@
+
+server:
+  port: 8500
+
+
 spring:
   application:
     name: gateway
@@ -15,11 +20,25 @@ spring:
           uri: http://localhost:8000
           predicates:
             - Path=/api/v1/product/**
+          filters:
+            - name: AuthFilter
+        - id: authorization
+          uri: http://localhost:8004
+          predicates:
+            - Path=/api/v6/auth/**
+
 
 
 eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
   client:
     register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka
 
-server:
-  port: 8500
+
+
+

@@ -18,9 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("auth")
+@RequestMapping("api/v6/auth")
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -56,4 +55,16 @@ public class AuthController {
 
         return ResponseEntity.ok("Register success");
     }
+
+    @PostMapping("/validate/{token}")
+    public ResponseEntity<String> validate(@PathVariable("token")String token) throws Exception {
+        System.out.println("VALDİDATTE");
+
+    boolean isValidate=authService.validate(token);
+
+
+        return ResponseEntity.ok(isValidate ?"Is valid":"Not valid token");
+    }
+
+
 }

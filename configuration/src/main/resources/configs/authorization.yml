@@ -1,10 +1,13 @@
 server:
   port: 8004
 
-
 spring:
   application:
     name: authorization
+  config:
+    api-endpoints:
+      authorization-url: http://localhost:8004/api/v6/auth
+
 
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -13,6 +16,6 @@ spring:
     password: ${db_password}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
