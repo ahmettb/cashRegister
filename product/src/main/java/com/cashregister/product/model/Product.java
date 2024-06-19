@@ -22,10 +22,11 @@ public class Product {
     private double price;
     private String description;
     private int stockCount;
+    private boolean deleted=false;
 
     @ManyToOne
     @JoinColumn(name = "category_id",referencedColumnName = "id")
-    @JsonManagedReference
+  //  @JsonManagedReference
     private Category category;
 
 

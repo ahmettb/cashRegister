@@ -1,6 +1,7 @@
 
 package com.cashregister.sale.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,13 @@ public class Product {
     private double price;
     private String description;
     private int stockCount;
+    private boolean deleted=false;
 
+
+    @ManyToOne
+    @JoinColumn(name = "category_id",referencedColumnName = "id")
+    //@JsonManagedReference
+    private Category category;
 
 
     // Diğer alanlar ve getter/setterlar...

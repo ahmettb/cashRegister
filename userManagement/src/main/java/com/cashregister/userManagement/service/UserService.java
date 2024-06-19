@@ -7,6 +7,7 @@ import com.cashregister.userManagement.model.dto.UserDto;
 import com.cashregister.userManagement.repository.IUserRepository;
 import com.cashregister.userManagement.repository.RoleRepository;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;

@@ -1,14 +1,21 @@
 package com.cashregister.sale.controller;
 
 
-import com.cashregister.sale.model.dto.SaleItemRequestDto;
+import com.cashregister.sale.error.ExceptionMessage;
+import com.cashregister.sale.exception.NotFoundProduct;
+import com.cashregister.sale.exception.StockNotEnough;
+import com.cashregister.sale.model.ShoppingList;
 import com.cashregister.sale.model.dto.SalesInfoDto;
+import com.cashregister.sale.model.dto.ShoppingItemRequestDto;
 import com.cashregister.sale.service.ISalesService;
 import lombok.AllArgsConstructor;
+import org.apache.commons.io.IOUtils;
+import org.modelmapper.spi.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -20,28 +27,35 @@ public class SaleController {
 
 
     @PostMapping("addSaleItem/{saleId}")
-    public ResponseEntity <SalesInfoDto>add(@RequestBody List<SaleItemRequestDto> saleItemDto, @PathVariable("saleId") long saleId)
-    {
+    public ResponseEntity<SalesInfoDto> add(@RequestBody List<ShoppingItemRequestDto> saleItemDto, @PathVariable("saleId") long saleId) {
 
-        SalesInfoDto salesInfo= salesService.addSaleItem(saleItemDto,saleId);
-        return new ResponseEntity<>(salesInfo,HttpStatus.OK);
+        SalesInfoDto salesInfo = salesService.addSaleItem(saleItemDto, saleId);
+        return new ResponseEntity<>(salesInfo, HttpStatus.OK);
 
     }
-    @PostMapping("addSaleInfo")
-    public ResponseEntity <?>addInfo()
-    {
 
-     salesService.addSaleInfo();
+    @PostMapping("addSaleInfo")
+    public ResponseEntity<?> addInfo() {
+
+        salesService.addSaleInfo();
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
-    @GetMapping("getSaleInfoById/{id}")
-    public ResponseEntity <SalesInfoDto>addInfo(@PathVariable("id") long id)
-    {
 
-            SalesInfoDto salesInfoDto=salesService.getSaleInfoById(id);
-        return new ResponseEntity<>(salesInfoDto,HttpStatus.OK);
+    @GetMapping("getSaleInfoById/{id}")
+    public ResponseEntity<ShoppingList> addInfo(@PathVariable("id") long id) {
+
+
+        return new ResponseEntity<>(salesService.getSaleInfoById(id), HttpStatus.OK);
 
     }
+
+    @PostMapping("addItemToCard/{id}")
+    public ResponseEntity<?> addShoppingItemToList(@RequestBody ShoppingItemRequestDto shoppingItemDto, @PathVariable("id") long id) {
+
+        return new ResponseEntity<>(salesService.addShoppingItemToList(shoppingItemDto, id), HttpStatus.OK);
+
+    }
+
 
 }

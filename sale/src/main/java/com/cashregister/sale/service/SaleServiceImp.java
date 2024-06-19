@@ -3,27 +3,34 @@ package com.cashregister.sale.service;
 //import com.cashregister.product.model.Product;
 //import com.cashregister.product.repository.IProductRepository;
 
+import com.cashregister.sale.config.ModelMapperConfig;
+import com.cashregister.sale.error.ExceptionMessage;
+import com.cashregister.sale.exception.SaleListNotFound;
+import com.cashregister.sale.feignclient.ProductClient;
 import com.cashregister.sale.model.*;
-import com.cashregister.sale.model.dto.SaleItemRequestDto;
-import com.cashregister.sale.model.dto.SaleItemResponseDto;
 import com.cashregister.sale.model.dto.SalesInfoDto;
-import com.cashregister.sale.repository.ISaleItemRepository;
-import com.cashregister.sale.repository.ISalesRepository;
+import com.cashregister.sale.model.dto.ShoppingItemRequestDto;
+
+import com.cashregister.sale.repository.IShoppingItemRepository;
+import com.cashregister.sale.repository.IShoppingListRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class SaleServiceImp implements ISalesService {
 
     private RestTemplate restTemplate;
-    final ISalesRepository salesRepository;
-    final ISaleItemRepository saleItemRepository;
+    final IShoppingListRepository shoppingListRepository;
+    final IShoppingItemRepository shoppingItemRepository;
+    final ProductClient productClient;
+    final ModelMapperConfig mapperConfig;
+
 
 
     @Override
@@ -32,103 +39,83 @@ public class SaleServiceImp implements ISalesService {
     }
 
     @Override
-    public SalesInfoDto addSaleItem(List<SaleItemRequestDto> saleItemDto, long saleId) {
+    public List<ShoppingItem> getSaleById(long saleId) {
+        return List.of();
+    }
 
-        SalesInfoDto salesInfoResp=new SalesInfoDto();
+    @Override
+    public ShoppingList getSaleInfoById(long saleId) {
 
-
-
-      SalesInfo salesInfo=  salesRepository.findById(saleId).orElseThrow(() -> new RuntimeException());
-      List<SaleItem>saleItems=new ArrayList<>();
-
-        saleItemDto.forEach(saleItemDto1 ->
-                {
-                    ResponseEntity<Product> responseProduct = restTemplate.getForEntity(
-                            "http://localhost:8080/api/product/getProductById/" + saleItemDto1.getId(), Product.class);
-
-                    Product product = responseProduct.getBody();
-                    SaleItem saleItem=new SaleItem();
-                    saleItem.setProduct(product);
-                    saleItem.setQuantity(saleItemDto1.getQuantity());
-                    saleItem.setType("kg");
-                    saleItem.setSalesInfo(salesInfo);
-                    saleItem.setTotalPrice(product.getPrice()*saleItemDto1.getQuantity());
-                    saleItemRepository.save(saleItem);
-                    saleItems.add(saleItem);
-                    salesInfo.getSaleItemList().add(saleItem);
-
-                }
-
-        );
-        salesInfo.getSaleItemList().forEach(
-                saleItem ->
-                {
-                    SaleItemResponseDto saleItemResponseDto=new SaleItemResponseDto();
-                    saleItemResponseDto.setCount(saleItem.getQuantity());
-                    saleItemResponseDto.setType(saleItem.getType());
-                    saleItemResponseDto.setProductName(saleItem.getProduct().getName());
-                    saleItemResponseDto.setProductDescription(saleItem.getProduct().getDescription());
-                    saleItemResponseDto.setProductPrice(saleItem.getProduct().getPrice());
-                    saleItemResponseDto.setTotalPrice(saleItem.getQuantity()*saleItem.getProduct().getPrice());
-                    salesInfoResp.getSaleItemResponseDtoList().add(saleItemResponseDto);
-                    salesInfoResp.setTotalPrice(salesInfoResp.getTotalPrice()+saleItem.getTotalPrice());
-
-                }
-
-        );
+      ShoppingList shoppingList= shoppingListRepository.findById(saleId).orElseThrow(()-> new SaleListNotFound("Sales List with "+saleId+" ID not found"));
+return  shoppingList;
+    }
 
 
-        salesRepository.save(salesInfo);
+    @Override
+    public void saveSaleItem(ShoppingItemRequestDto saleItemRequestDto) {
 
-        return salesInfoResp;
+    }
 
+    @Override
+    public void addShoppingList(ShoppingItemRequestDto saleItemRequestDto) {
 
+    }
 
+    @Override
+    public void addShoppingItemToList(ShoppingItemRequestDto itemRequestDto) {
 
+    }
 
+    @Override
+    public SalesInfoDto addSaleItem(List<ShoppingItemRequestDto> saleItemDto, long saleId) {
+        return null;
     }
 
     @Override
     public void addSaleInfo() {
 
-        salesRepository.save(new SalesInfo());
+    }
+
+    @Override
+    public void removeItemFromList(long shoppingId, long itemId) {
 
     }
 
     @Override
-    public SalesInfoDto getSaleInfoById(long saleId) {
-        SalesInfo salesInfo=  salesRepository.findById(saleId).orElseThrow(() -> new RuntimeException());
-        SalesInfoDto salesInfoResp=new SalesInfoDto();
+    public ShoppingList addShoppingItemToList(ShoppingItemRequestDto itemRequestDto, long shoppingId) {
 
-        salesInfo.getSaleItemList().forEach(
-                saleItem ->
-                {
-                    SaleItemResponseDto saleItemResponseDto=new SaleItemResponseDto();
-                    saleItemResponseDto.setCount(saleItem.getQuantity());
-                    saleItemResponseDto.setType(saleItem.getType());
-                    saleItemResponseDto.setProductName(saleItem.getProduct().getName());
-                    saleItemResponseDto.setProductDescription(saleItem.getProduct().getDescription());
-                    saleItemResponseDto.setProductPrice(saleItem.getProduct().getPrice());
-                    saleItemResponseDto.setTotalPrice(saleItem.getQuantity()*saleItem.getProduct().getPrice());
-                    salesInfoResp.getSaleItemResponseDtoList().add(saleItemResponseDto);
-                    salesInfoResp.setTotalPrice(salesInfoResp.getTotalPrice()+saleItem.getTotalPrice());
+    ShoppingList shoppingList = new ShoppingList();
 
-                }
-
-        );
-
-        return  salesInfoResp;
+        if(!shoppingListRepository.findById(shoppingId).isPresent())
+        {
+            shoppingList=new ShoppingList();
+            shoppingListRepository.save(shoppingList);
+        }
 
 
 
+            shoppingList=shoppingListRepository.findById(shoppingId).get();
+
+            Product product=productClient.getProductById(itemRequestDto.getId()).getBody();
+
+            productClient.updateStock(product.getId(),itemRequestDto.getQuantity());
+
+            ShoppingItem shoppingItem=new ShoppingItem();
+            shoppingItem.setProduct(product);
+            shoppingItem.setSalesInfo(shoppingList);
+            shoppingItem.setQuantity(itemRequestDto.getQuantity());
+            shoppingItem.setType(itemRequestDto.getType());
+            shoppingItem.setTotalPrice(itemRequestDto.getQuantity()*product.getPrice());
+
+            shoppingList.getSaleItemList().add(shoppingItem);
+            shoppingItemRepository.save(shoppingItem);
+
+            return  shoppingList;
+        }
 
 
-    }
 
-    @Override
-    public List<SalesInfo> getSaleById(long saleId) {
 
-        return salesRepository.findAll();
 
-    }
+
 }

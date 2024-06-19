@@ -11,8 +11,9 @@ public interface IProductService {
 
 
     void saveProduct(ProductWithCategoryDto product);
+    void updateStock(long productId, int stock);
 
-    void deleteProduct();
+    void deleteProduct(long id);
     List<Product> getAllProduct();
     Product getProductVById(long id);
 

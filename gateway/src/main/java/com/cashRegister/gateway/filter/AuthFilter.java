@@ -33,7 +33,6 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
 
     @Override
     public List<String> shortcutFieldOrder() {
-        // we need this to use shortcuts in the application.yml
         return Arrays.asList("roles");
     }
 
@@ -67,14 +66,11 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                 .parseClaimsJws(jwtToken)
                 .getBody();
 
-        // Claims içerisinden "roles" bilgisini al
         List<?> rolesObject = (List<?>) claims.get("roles");
 
-        // Eğer "roles" bilgisi null değilse ve List<String> ise, direkt olarak dön
         if (rolesObject instanceof List<?>) {
             @SuppressWarnings("unchecked")
             List<String> roles = (List<String>) rolesObject;
-            System.out.println("Exxxx"+ roles.get(0));
             return roles;
         } else {
             return Collections.emptyList();
@@ -83,10 +79,11 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
 
     public boolean roleControl(String jwtToken, String requestPath) {
 
+        System.out.println("Request address: "+ requestPath);
+
 
        List<String>  roless=new ArrayList<>();
         roless=extractRolesFromJwt(jwtToken);
-        roless.forEach(s->System.out.println("EXTRACT "+s));
 
         List<String> finalRoless = roless;
         List<String>urls=new ArrayList<>();
@@ -95,7 +92,6 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
 
                 if(finalRoless.stream().anyMatch(r->key.equals(r)))
                 {
-                    System.out.println("key "+ key);
 
                     value.forEach(v->urls.add(v));
 
@@ -124,18 +120,20 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                 String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
                     authHeader = authHeader.substring(7);
-
                 }
-
                    if( validateJwtToken(authHeader))
                    {
+                       System.out.println("xxxx ");
 
-
-                           if(roleControl(authHeader,exchange.getRequest().getPath().value()))
+                       if(roleControl(authHeader,exchange.getRequest().getPath().value()))
                            {
+                               System.out.println("ROLE CONTROL ");
+
                                return chain.filter(exchange);
                            }
                            else {
+                               System.out.println("ROLE 123 ");
+
                                throw  new UnauthorizedException();
                            }
 
