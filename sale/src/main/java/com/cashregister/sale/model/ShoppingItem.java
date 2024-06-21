@@ -17,7 +17,8 @@ import lombok.Setter;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
     @ManyToOne
@@ -25,7 +26,9 @@ import lombok.Setter;
     @JsonBackReference
     private ShoppingList salesInfo;
 
+   // private double  price;
     private double quantity;
     private String type;
     private double totalPrice;
+    private double price;
 }

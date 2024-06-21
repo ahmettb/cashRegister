@@ -27,7 +27,8 @@ public class SaleController {
 
 
     @PostMapping("addSaleItem/{saleId}")
-    public ResponseEntity<SalesInfoDto> add(@RequestBody List<ShoppingItemRequestDto> saleItemDto, @PathVariable("saleId") long saleId) {
+    public ResponseEntity<SalesInfoDto> add( @RequestBody List<ShoppingItemRequestDto> saleItemDto, @PathVariable("saleId") long saleId) {
+
 
         SalesInfoDto salesInfo = salesService.addSaleItem(saleItemDto, saleId);
         return new ResponseEntity<>(salesInfo, HttpStatus.OK);
@@ -43,7 +44,7 @@ public class SaleController {
     }
 
     @GetMapping("getSaleInfoById/{id}")
-    public ResponseEntity<ShoppingList> addInfo(@PathVariable("id") long id) {
+    public ResponseEntity<SalesInfoDto> addInfo(@PathVariable("id") long id) {
 
 
         return new ResponseEntity<>(salesService.getSaleInfoById(id), HttpStatus.OK);
@@ -51,9 +52,15 @@ public class SaleController {
     }
 
     @PostMapping("addItemToCard/{id}")
-    public ResponseEntity<?> addShoppingItemToList(@RequestBody ShoppingItemRequestDto shoppingItemDto, @PathVariable("id") long id) {
+    public ResponseEntity<?> addShoppingItemToList(@RequestHeader("Authorization")String token ,@RequestBody List<ShoppingItemRequestDto > shoppingItemDto, @PathVariable("id") long id) {
+        token=token.substring(7);
+        return new ResponseEntity<>(salesService.addShoppingItemToList(shoppingItemDto, id,token), HttpStatus.OK);
 
-        return new ResponseEntity<>(salesService.addShoppingItemToList(shoppingItemDto, id), HttpStatus.OK);
+    }
+
+    @PostMapping("create-sale")
+    public ResponseEntity<?> createSale(@RequestHeader("Authorization")String token) {
+        return new ResponseEntity<>(salesService.createSale(token), HttpStatus.OK);
 
     }
 

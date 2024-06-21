@@ -20,7 +20,6 @@ public class CampaignServiceImp implements ICampaignService{
 
         Campaign campaign1=new Campaign();
         campaign1.setCampaignName(campaign1.getCampaignName());
-        campaign1.setDiscountRate(campaign1.getDiscountRate());
         campaignRepository.save(campaign1);
     }
 

@@ -42,6 +42,7 @@ new IllegalArgumentException("Invalid category ıd")
         product.setName(productDto.getName());
         product.setPrice(productDto.getPrice());
         product.setCategory(category);
+        product.setStockCount(productDto.getStock());
         productRepository.save(product);
     }
 
@@ -57,7 +58,6 @@ new IllegalArgumentException("Invalid category ıd")
 
             if(product.getStockCount()<stock)
            {
-               log.info("STOCK NOT ENOUGH HATASI");
                throw new StockNotEnough("STOCK NOT ENOUGH");
            }
            product.setStockCount(product.getStockCount()-stock);

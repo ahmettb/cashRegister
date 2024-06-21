@@ -79,28 +79,60 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
 
     public boolean roleControl(String jwtToken, String requestPath) {
 
-        System.out.println("Request address: "+ requestPath);
 
 
-       List<String>  roless=new ArrayList<>();
-        roless=extractRolesFromJwt(jwtToken);
+        List<String> roles = extractRolesFromJwt(jwtToken);
 
-        List<String> finalRoless = roless;
-        List<String>urls=new ArrayList<>();
-        routes.roleEndpoints.forEach((key, value) ->
+        List<String>paths=new ArrayList<>();
+        routes.getRoleEndpoints().forEach((key,value)->
         {
+            if(roles.stream().anyMatch(r->r.equals(key)))
+            {
+               value.forEach(path->{
+                   paths.add(path);
+               }
+               );
 
-                if(finalRoless.stream().anyMatch(r->key.equals(r)))
-                {
+            }
 
-                    value.forEach(v->urls.add(v));
 
-                }
 
-                }
-        );
-        boolean control=urls.stream().anyMatch(url->url.equals(requestPath));
-        return control;
+        });
+
+            if(paths.stream().anyMatch(path->requestPath.contains(path)))
+            {
+                return true;
+            }
+
+        return false;
+
+
+
+
+
+
+
+//
+//
+//       List<String>  roless=new ArrayList<>();
+//        roless=extractRolesFromJwt(jwtToken);
+//
+//        List<String> finalRoless = roless;
+//        List<String>urls=new ArrayList<>();
+//        routes.getRoleEndpoints().forEach((key, value) ->
+//        {
+//
+//                if(finalRoless.stream().anyMatch(r->key.contains(r)))
+//                {
+//
+//                    value.forEach(v->urls.add(v));
+//
+//                }
+//
+//                }
+//        );
+//        boolean control=urls.stream().anyMatch(url->url.contains(requestPath));
+//        return control;
 
 
 
@@ -123,16 +155,13 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                 }
                    if( validateJwtToken(authHeader))
                    {
-                       System.out.println("xxxx ");
 
                        if(roleControl(authHeader,exchange.getRequest().getPath().value()))
                            {
-                               System.out.println("ROLE CONTROL ");
 
                                return chain.filter(exchange);
                            }
                            else {
-                               System.out.println("ROLE 123 ");
 
                                throw  new UnauthorizedException();
                            }

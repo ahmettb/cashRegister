@@ -69,7 +69,7 @@ public class   JwtUtils {
     }
 
     public String getUserNameFromJwtToken(String token) {
-        getRoleFromJwt(token);
+       // getRoleFromJwt(token);
         Claims claims= Jwts.parser().setSigningKey(jwtSecret)
                 .parseClaimsJws(token).getBody();
 
@@ -86,7 +86,6 @@ public class   JwtUtils {
 
     public boolean validateJwtToken(String authToken) {
         try {
-            System.out.println("validateJwtToken   "+authToken);
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (MalformedJwtException e) {

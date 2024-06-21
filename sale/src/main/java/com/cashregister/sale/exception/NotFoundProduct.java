@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
     }
     public NotFoundProduct(ExceptionMessage  message)
     {
-        System.out.println("önce geldim");
         this.exceptionMessage=message;
     }
     public NotFoundProduct(String message,ExceptionMessage exceptionMessage)

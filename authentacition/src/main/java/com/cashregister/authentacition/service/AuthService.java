@@ -3,10 +3,13 @@ package com.cashregister.authentacition.service;
 import com.cashregister.authentacition.model.ERole;
 import com.cashregister.authentacition.model.Role;
 import com.cashregister.authentacition.model.User;
+import com.cashregister.authentacition.model.UserInfo;
 import com.cashregister.authentacition.model.request.LoginRequest;
 import com.cashregister.authentacition.model.request.SignupRequest;
 import com.cashregister.authentacition.repository.RoleRepository;
 import com.cashregister.authentacition.repository.UserRepository;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -91,12 +94,46 @@ public class AuthService {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsername(), loginRequest.getPassword()
         ));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
         String token = jwtUtils.generateJwtToken(authentication, user.getRoles());
 
         return token;
 
     }
+
+    public UserInfo getUserInfo(String token)
+    {
+       String username= jwtUtils.getUserNameFromJwtToken(token);
+      User user=  userRepository.findByUsername(username).orElseThrow(()->new RuntimeException("User not found"));
+
+      UserInfo userInfo=new UserInfo();
+      userInfo.setId(user.getId());
+      userInfo.setName(user.getName());
+      userInfo.setSurname(user.getSurname());
+      userInfo.setRole(userInfo.getRole());
+      return  userInfo;
+    }
+
+    public UserInfo getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            User user = userRepository.findByUsername(username).orElse(null);
+            if (user != null) {
+                UserInfo userInfo = new UserInfo();
+                userInfo.setId(user.getId());
+                userInfo.setName(user.getName());
+                userInfo.setSurname(user.getSurname());
+                return userInfo;
+            }
+        }
+        return null;
+    }
+
 
 
 }

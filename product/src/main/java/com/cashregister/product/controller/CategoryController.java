@@ -23,7 +23,6 @@ public class CategoryController {
    @PostMapping(value = "save",consumes = {"application/json"})
     public ResponseEntity<String> saveCategory(@RequestBody Category category )
     {
-        System.out.println(category.getCategoryName());
         categoryService.addCategory(category);
         return ResponseEntity.ok("Success");
 

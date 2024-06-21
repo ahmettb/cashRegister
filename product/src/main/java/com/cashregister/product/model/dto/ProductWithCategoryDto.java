@@ -12,6 +12,7 @@ public class ProductWithCategoryDto {
     private double price;
     private  String description;
     private  long categoryId;
+    private  int stock;
 
 
 

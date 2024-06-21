@@ -18,7 +18,6 @@ public class Campaign {
 
    private String campaignName;
 
-   private  double discountRate;
 
 
 

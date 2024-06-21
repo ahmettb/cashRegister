@@ -25,7 +25,6 @@ public class CategoryServiceImp implements ICategoryService{
     @Override
     public void addCategory(Category category) {
 
-        System.out.println("Category name"+category.getCategoryName());
 
         boolean isExist= categoryRepository.existsByCategoryName(category.getCategoryName());
 

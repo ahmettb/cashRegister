@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -23,4 +24,17 @@ public class ShoppingList {
     @ManyToOne
     @JoinColumn(name = "campaign_id",referencedColumnName = "id")
     private Campaign campaign;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    private double totalPrice;
+
+    private Date saleDate;
+
+
+
+    //@Column(name = "total_price")
+    //private double totalPrice;
 }

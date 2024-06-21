@@ -3,6 +3,7 @@ package com.cashregister.sale.service;
 import com.cashregister.sale.model.*;
 import com.cashregister.sale.model.dto.SalesInfoDto;
 import com.cashregister.sale.model.dto.ShoppingItemRequestDto;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface ISalesService {
     void getAllSales();
 
     List<ShoppingItem> getSaleById(long saleId);
-    ShoppingList getSaleInfoById(long saleId);
+    SalesInfoDto getSaleInfoById(long saleId);
 
     void saveSaleItem(ShoppingItemRequestDto saleItemRequestDto);
     void addShoppingList(ShoppingItemRequestDto saleItemRequestDto);
@@ -28,5 +29,13 @@ public interface ISalesService {
 
 
     void removeItemFromList(long shoppingId,long itemId);
-    ShoppingList addShoppingItemToList(ShoppingItemRequestDto itemRequestDto, long shoppingId);
+
+    @Transactional
+    SalesInfoDto addShoppingItemToList(List<ShoppingItemRequestDto > itemRequestDto, long shoppingId,String token);
+
+    ShoppingList createSale(String cashierToken);
+
+
 }
+
+
