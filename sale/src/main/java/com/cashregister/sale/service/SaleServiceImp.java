@@ -38,19 +38,8 @@ public class SaleServiceImp implements ISalesService {
     final IUserRepository userRepository;
 
 
-    @Override
-    public void getAllSales() {
 
-    }
-
-    @Override
-    public List<ShoppingItem> getSaleById(long saleId) {
-        return List.of();
-    }
-
-
-    public SalesInfoDto getSaleInfo(long id)
-    {
+    public SalesInfoDto getSaleInfo(long id) {
         ShoppingList shoppingList = shoppingListRepository.findById(id).orElseThrow(() -> new SaleListNotFound("Sales List with " + id + " ID not found"));
         SalesInfoDto salesInfoDto = new SalesInfoDto();
         salesInfoDto.setCashierName(shoppingList.getUser().getName());
@@ -81,43 +70,7 @@ public class SaleServiceImp implements ISalesService {
     @Override
     public SalesInfoDto getSaleInfoById(long saleId) {
 
-
         return getSaleInfo(saleId);
-
-        //  SalesInfoDto salesInfoDto =modelMapper.map(shoppingList,SalesInfoDto.class);
-        //return salesInfoDto;
-
-
-    }
-
-
-    @Override
-    public void saveSaleItem(ShoppingItemRequestDto saleItemRequestDto) {
-
-    }
-
-    @Override
-    public void addShoppingList(ShoppingItemRequestDto saleItemRequestDto) {
-
-    }
-
-    @Override
-    public void addShoppingItemToList(ShoppingItemRequestDto itemRequestDto) {
-
-    }
-
-    @Override
-    public SalesInfoDto addSaleItem(List<ShoppingItemRequestDto> saleItemDto, long saleId) {
-        return null;
-    }
-
-    @Override
-    public void addSaleInfo() {
-
-    }
-
-    @Override
-    public void removeItemFromList(long shoppingId, long itemId) {
 
     }
 
@@ -191,127 +144,13 @@ public class SaleServiceImp implements ISalesService {
 shoppingList.setSaleDate(new Date());
 
 
+
 SalesInfoDto salesInfoDto=getSaleInfo(shoppingId);
 
 return salesInfoDto;
 
 
-
-
-
-
-//      ShoppingList shoppingList=  shoppingListRepository.findById(shoppingId).orElseThrow(()->new SaleListNotFound("Sale list not found"));
-//       Product product= productClient.getProductById(itemRequestDto.getId()).getBody();
-//        boolean productControl=shoppingList.getSaleItemList().stream().anyMatch(item->item.getProduct().getId()==itemRequestDto.getId());
-//
-//
-//        if(shoppingList.getSaleItemList().isEmpty()) {
-//
-//
-//            ShoppingItem shoppingItem = new ShoppingItem();
-//            shoppingItem.setProduct(product);
-//            shoppingItem.setQuantity(itemRequestDto.getQuantity());
-//            shoppingItem.setType(itemRequestDto.getType());
-//            shoppingItem.setSalesInfo(shoppingList);
-//            shoppingItem.setTotalPrice(product.getPrice()*itemRequestDto.getQuantity());
-//            shoppingList.getSaleItemList().add(shoppingItem);
-//            shoppingItem.setSalesInfo(shoppingList);
-//          //  shoppingListRepository.save(shoppingList);
-//            shoppingItemRepository.save(shoppingItem);
-//            productClient.updateStock(product.getId(),itemRequestDto.getQuantity());
-//            return shoppingList;
-//        }
-//        else {
-//
-//            if(productControl) {
-//
-//              ShoppingItem shoppingItem=  shoppingList.getSaleItemList().stream().filter(item->item.getProduct().getId()==itemRequestDto.getId()).findFirst().get();
-//
-//              shoppingItem.setQuantity(shoppingItem.getQuantity()+itemRequestDto.getQuantity());
-//              shoppingItem.setTotalPrice(shoppingItem.getTotalPrice()+itemRequestDto.getQuantity()*product.getPrice());
-//                productClient.updateStock(product.getId(),itemRequestDto.getQuantity());
-//                shoppingItem.setTotalPrice(itemRequestDto.getQuantity() * product.getPrice());
-//
-//              shoppingItemRepository.save(shoppingItem);
-//              return shoppingList;
-//
-//            }
-//            else {
-//
-//                ShoppingItem shoppingItem = new ShoppingItem();
-//                shoppingItem.setProduct(product);
-//                shoppingItem.setSalesInfo(shoppingList);
-//                shoppingItem.setQuantity(itemRequestDto.getQuantity());
-//                shoppingItem.setType(itemRequestDto.getType());
-//                shoppingItem.setTotalPrice(itemRequestDto.getQuantity() * product.getPrice());
-//                shoppingList.getSaleItemList().add(shoppingItem);
-//                productClient.updateStock(product.getId(),itemRequestDto.getQuantity());
-//                shoppingItemRepository.save(shoppingItem);
-//                //shoppingListRepository.save(shoppingList);
-//return shoppingList;
-//
-//            }
-
         }
-
-
-
-
-
-
-
-//       ShoppingList shoppingList= shoppingListRepository.findById(shoppingId).orElseThrow(()->new SaleListNotFound("Sale List not found"));
-//        Product product = productClient.getProductById(itemRequestDto.getId()).getBody();
-//
-//        if(shoppingList.getSaleItemList().isEmpty()) {
-//            ShoppingItem shoppingItem2 = new ShoppingItem();
-//            shoppingItem2.setProduct(product);
-//            shoppingItem2.setType(itemRequestDto.getType());
-//            shoppingItem2.setQuantity(itemRequestDto.getQuantity());
-//            shoppingItem2.setSalesInfo(shoppingList);
-//            shoppingItem2.setTotalPrice(shoppingItem2.getTotalPrice() + itemRequestDto.getQuantity() * product.getPrice());
-//            shoppingList.getSaleItemList().add(shoppingItem2);
-//         //    shoppingListRepository.save(shoppingList);
-//            shoppingItemRepository.save(shoppingItem2);
-//            return shoppingList;
-//        }
-//        else {
-//            if (shoppingList.getSaleItemList().stream().anyMatch(item -> item.getProduct().getId() == itemRequestDto.getId())) {
-//                ShoppingItem shoppingItem = shoppingList.getSaleItemList().stream().filter(item -> item.getProduct().getId() == product.getId()).findFirst().get();
-//                productClient.updateStock(itemRequestDto.getId(), itemRequestDto.getQuantity());
-//                shoppingItem.setQuantity(shoppingItem.getQuantity() + itemRequestDto.getQuantity());
-//                shoppingItem.setTotalPrice(shoppingItem.getTotalPrice() + itemRequestDto.getQuantity() * product.getPrice());
-//                shoppingItemRepository.save(shoppingItem);
-//                return  shoppingList;
-//
-//            }
-//            else {
-//                productClient.updateStock(product.getId(), itemRequestDto.getQuantity());
-//
-//                ShoppingItem shoppingItem = new ShoppingItem();
-//                shoppingItem.setProduct(product);
-//                shoppingItem.setSalesInfo(shoppingList);
-//                shoppingItem.setQuantity(itemRequestDto.getQuantity());
-//                shoppingItem.setType(itemRequestDto.getType());
-//                shoppingItem.setTotalPrice(itemRequestDto.getQuantity() * product.getPrice());
-//
-//                shoppingList.getSaleItemList().add(shoppingItem);
-//
-//                shoppingItemRepository.save(shoppingItem);
-//                return  shoppingList;
-//
-//            }
-
-
-
-    //itemrequestdto kontrolü yapılacak
-
-
-    //   shoppingList = new ShoppingList();
-    // shoppingListRepository.save(shoppingList);
-
-
-
 
     @Override
     public ShoppingList createSale(String cashierToken) {

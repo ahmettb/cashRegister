@@ -66,7 +66,6 @@ public class AuthController {
     public ResponseEntity<String> validate(@PathVariable("token")String token) throws Exception {
 
     boolean isValidate=authService.validate(token);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         return ResponseEntity.ok(isValidate ?"Is valid":"Not valid token");
     }

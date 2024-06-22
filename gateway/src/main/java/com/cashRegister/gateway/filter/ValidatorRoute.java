@@ -1,6 +1,6 @@
 package com.cashRegister.gateway.filter;
 
-import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -12,10 +12,15 @@ public class ValidatorRoute {
 
 
 List<String> openApiEndpoints=List.of(
-        "api/v1/product/getAll"
+        "api/v6/auth/signin",
+        "api/v6/auth/signup",
+        "api/v6/auth/validate",
+        "api/v1/product"
+
+
 );
 
-public Predicate <ServerHttpRequest>isSecureEndpoint =serverHttpRequest ->
+public Predicate <ServerHttpRequest>isSecureEndpoint = serverHttpRequest ->
 
     openApiEndpoints.stream().noneMatch(uri->serverHttpRequest.getURI().getPath().contains(uri));
 

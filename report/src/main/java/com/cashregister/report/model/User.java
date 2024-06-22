@@ -1,4 +1,4 @@
-package com.cashregister.userManagement.model;
+package com.cashregister.report.model;
 
 
 import jakarta.persistence.*;
@@ -21,13 +21,11 @@ public class User {
 
     private  String name;
 
-    private String surname;
-    private String username;
 
+    private String username;
+    private String surname;
 
     private String mail;
-
-    private boolean deleted=false;
 
     private  String password;
 

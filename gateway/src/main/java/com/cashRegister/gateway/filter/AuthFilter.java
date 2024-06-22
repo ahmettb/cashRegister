@@ -9,6 +9,7 @@ import org.apache.http.HttpHeaders;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -69,7 +70,6 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
         List<?> rolesObject = (List<?>) claims.get("roles");
 
         if (rolesObject instanceof List<?>) {
-            @SuppressWarnings("unchecked")
             List<String> roles = (List<String>) rolesObject;
             return roles;
         } else {
@@ -79,10 +79,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
 
     public boolean roleControl(String jwtToken, String requestPath) {
 
-
-
         List<String> roles = extractRolesFromJwt(jwtToken);
-
         List<String>paths=new ArrayList<>();
         routes.getRoleEndpoints().forEach((key,value)->
         {
@@ -108,34 +105,6 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
 
 
 
-
-
-
-
-//
-//
-//       List<String>  roless=new ArrayList<>();
-//        roless=extractRolesFromJwt(jwtToken);
-//
-//        List<String> finalRoless = roless;
-//        List<String>urls=new ArrayList<>();
-//        routes.getRoleEndpoints().forEach((key, value) ->
-//        {
-//
-//                if(finalRoless.stream().anyMatch(r->key.contains(r)))
-//                {
-//
-//                    value.forEach(v->urls.add(v));
-//
-//                }
-//
-//                }
-//        );
-//        boolean control=urls.stream().anyMatch(url->url.contains(requestPath));
-//        return control;
-
-
-
     }
 
 
@@ -143,8 +112,11 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
     public GatewayFilter apply(Config config) {
 
         return ((exchange, chain) -> {
+            if(!validatorRoute.isSecureEndpoint.test(exchange.getRequest()))
+            {
+                return chain.filter(exchange);
 
-            ;
+            }
 
             if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                 throw new RuntimeException("Authorization header is missing");
@@ -153,9 +125,11 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
                     authHeader = authHeader.substring(7);
                 }
+
+
+
                    if( validateJwtToken(authHeader))
                    {
-
                        if(roleControl(authHeader,exchange.getRequest().getPath().value()))
                            {
 

@@ -23,11 +23,29 @@ spring:
           uri: http://localhost:8000
           predicates:
             - Path=/api/v1/product/**
+          filters:
+            - name: AuthFilter
+
+        - id: usermanagement
+          uri: http://localhost:8008
+          predicates:
+            - Path=/api/user-management/**
+          filters:
+            - name: AuthFilter
+
+        - id: report
+          uri: http://localhost:8001
+          predicates:
+            - Path=/api/v7/report/**
+          filters:
+            - name: AuthFilter
 
         - id: authorization
           uri: http://localhost:8004
           predicates:
             - Path=/api/v6/auth/**
+          filters:
+            - name: AuthFilter
 
 
 

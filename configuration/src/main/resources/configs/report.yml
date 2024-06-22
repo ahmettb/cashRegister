@@ -13,8 +13,7 @@ spring:
     name: report
   config:
     api-endpoints:
-      product-url: http://localhost:8001/api/v1/students
-      sale-url: http://localhost:8002/api/v1/students
+      report-url: http://localhost:8001/api/v7/report
 
 
   datasource:

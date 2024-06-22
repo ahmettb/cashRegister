@@ -1,0 +1,27 @@
+
+server:
+  port: 8008
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  application:
+    name: usermanagement
+
+  config:
+    api-endpoints:
+      usermanagements-url: http://localhost:8008/api/api/user-management
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${db_url}
+    username: ${db_username}
+    password: ${db_password}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect

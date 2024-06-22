@@ -1,0 +1,31 @@
+package com.cashregister.report.model;
+
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "sale_item")
+    public class ShoppingItem {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "sales_info_id", referencedColumnName = "id")
+    private ShoppingList salesInfo;
+
+   // private double  price;
+    private double quantity;
+    private String type;
+    private double totalPrice;
+    private double price;
+}

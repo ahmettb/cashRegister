@@ -23,13 +23,12 @@ public class   JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
     private String jwtSecret=System.getenv("JWT_KEY");
 
-    private long jwtExpirationMs = 700000000; // 30 dakika
+    private long jwtExpirationMs =10000000; // 30 dakika
     public String generateJwtToken(Authentication authentication, Set<Role> roles) {
 
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             String username = loggedInUser.getName();
 
-            // Rol isimlerini içeren bir String listesi oluştur
             List<String> roleNames = roles.stream()
                     .map(role -> role.getName().toString())
                     .collect(Collectors.toList());
@@ -48,20 +47,6 @@ public class   JwtUtils {
             return token;
         }
 
-//        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-//        Map<String, Object> rolesClaim = new HashMap<>();
-//        String username = loggedInUser.getName();
-//        List<ERole> roleList = new ArrayList<>();
-//        roles.forEach(role -> roleList.add(role.getName()));
-//            rolesClaim.put("roles",roleList);
-//       String token =Jwts.builder()
-//                .setSubject(username)
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date(new Date().getTime()+jwtExpirationMs))
-//                .addClaims(rolesClaim)
-//                .signWith(SignatureAlgorithm.HS256, jwtSecret)
-//                .compact();
-//       return  token;
 
 
     private Key key() {
