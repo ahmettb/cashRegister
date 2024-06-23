@@ -5,6 +5,7 @@ import com.cashRegister.gateway.routers.Routes;
 import io.jsonwebtoken.*;
 import lombok.Data;
 import lombok.Value;
+import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpHeaders;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -19,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
+@Log4j2
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
 
     public AuthFilter(ValidatorRoute validatorRoute, RestTemplate restTemplate) {
@@ -44,23 +46,8 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
     private String jwtSecret = System.getenv("JWT_KEY");
 
 
-    public boolean validateJwtToken(String authToken) {
-        try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
-            return true;
-        } catch (MalformedJwtException e) {
-            throw new RuntimeException("Invalid JWT Token");
-        } catch (ExpiredJwtException e) {
-            throw new RuntimeException(" JWT Token expired");
-        } catch (UnsupportedJwtException e) {
-            throw new RuntimeException("Invalid JWT Token unsupported");
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Invalid JWT Token empty");
-        }
-
-    }
-
     Routes routes = new Routes();
+
     public List<String> extractRolesFromJwt(String jwtToken) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
@@ -80,29 +67,25 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
     public boolean roleControl(String jwtToken, String requestPath) {
 
         List<String> roles = extractRolesFromJwt(jwtToken);
-        List<String>paths=new ArrayList<>();
-        routes.getRoleEndpoints().forEach((key,value)->
+        List<String> paths = new ArrayList<>();
+        routes.getRoleEndpoints().forEach((key, value) ->
         {
-            if(roles.stream().anyMatch(r->r.equals(key)))
-            {
-               value.forEach(path->{
-                   paths.add(path);
-               }
-               );
+            if (roles.stream().anyMatch(r -> r.equals(key))) {
+                value.forEach(path -> {
+                            paths.add(path);
+                        }
+                );
 
             }
-
 
 
         });
 
-            if(paths.stream().anyMatch(path->requestPath.contains(path)))
-            {
-                return true;
-            }
+        if (paths.stream().anyMatch(path -> requestPath.contains(path))) {
+            return true;
+        }
 
         return false;
-
 
 
     }
@@ -112,8 +95,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
     public GatewayFilter apply(Config config) {
 
         return ((exchange, chain) -> {
-            if(!validatorRoute.isSecureEndpoint.test(exchange.getRequest()))
-            {
+            if (!validatorRoute.isSecureEndpoint.test(exchange.getRequest())) {
                 return chain.filter(exchange);
 
             }
@@ -126,24 +108,21 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                     authHeader = authHeader.substring(7);
                 }
 
+                try {
+                    restTemplate.getForObject("http://localhost:8500/api/v6/auth/validate/" + authHeader, String.class);
 
+                } catch (Exception e) {
+                    throw new RuntimeException("Token is not valid");
+                }
 
-                   if( validateJwtToken(authHeader))
-                   {
-                       if(roleControl(authHeader,exchange.getRequest().getPath().value()))
-                           {
+                if (roleControl(authHeader, exchange.getRequest().getPath().value())) {
 
-                               return chain.filter(exchange);
-                           }
-                           else {
+                    return chain.filter(exchange);
+                } else {
 
-                               throw  new UnauthorizedException();
-                           }
+                    throw new UnauthorizedException();
+                }
 
-                   }
-
-
-                return chain.filter(exchange);
 
             }
 
