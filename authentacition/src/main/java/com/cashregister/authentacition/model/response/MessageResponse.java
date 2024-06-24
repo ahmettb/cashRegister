@@ -1,4 +1,4 @@
-package jwt;
+package com.cashregister.authentacition.model.response;
 
 public class MessageResponse {
     private String message;

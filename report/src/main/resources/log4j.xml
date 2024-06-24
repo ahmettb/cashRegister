@@ -6,12 +6,12 @@
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %highlight{%-5level}{FATAL=red, ERROR=red, WARN=yellow, INFO=green, DEBUG=cyan, TRACE=blue} %logger{36} - %msg%n"/>
         </Console>
         <!-- File Appender -->
-        <RollingFile name="FileAppender" fileName="logs/sale.log"
-                     filePattern="logs/sale-%d{yyyy-MM-dd}.log">
+        <RollingFile name="FileAppender" fileName="logs/report.log"
+                     filePattern="logs/report-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-                <SizeBasedTriggeringPolicy size="5 MB"/>
+                <SizeBasedTriggeringPolicy size="5MB"/>
             </Policies>
         </RollingFile>
     </Appenders>
@@ -21,7 +21,7 @@
             <AppenderRef ref="FileAppender"/>
         </Root>
         <!-- Specific package logger -->
-        <Logger name="com.cashregister.sale" level="debug" additivity="false">
+        <Logger name="com.cashregister.report" level="debug" additivity="false">
             <AppenderRef ref="FileAppender"/>
         </Logger>
     </Loggers>

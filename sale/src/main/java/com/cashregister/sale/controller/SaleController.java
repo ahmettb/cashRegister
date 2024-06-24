@@ -19,29 +19,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v3/sale")
+@RequestMapping("api/sale")
 @AllArgsConstructor
 public class SaleController {
 
     final ISalesService salesService;
-
-
-    @PostMapping("addSaleItem/{saleId}")
-    public ResponseEntity<SalesInfoDto> add( @RequestBody List<ShoppingItemRequestDto> saleItemDto, @PathVariable("saleId") long saleId) {
-
-
-        SalesInfoDto salesInfo = salesService.addSaleItem(saleItemDto, saleId);
-        return new ResponseEntity<>(salesInfo, HttpStatus.OK);
-
-    }
-
-    @PostMapping("addSaleInfo")
-    public ResponseEntity<?> addInfo() {
-
-        salesService.addSaleInfo();
-        return new ResponseEntity<>(HttpStatus.OK);
-
-    }
 
     @GetMapping("getSaleInfoById/{id}")
     public ResponseEntity<SalesInfoDto> addInfo(@PathVariable("id") long id) {

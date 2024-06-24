@@ -14,7 +14,7 @@ spring:
 
   config:
     api-endpoints:
-      usermanagements-url: http://localhost:8008/api/api/user-management
+      usermanagements-url: http://localhost:8008/api/user-management
   datasource:
     driver-class-name: org.postgresql.Driver
     url: ${db_url}

@@ -3,3 +3,4 @@ spring:
     name: authorization
   config:
     import: optional:configserver:http://localhost:9000
+

@@ -15,14 +15,14 @@ spring:
         - id: sale
           uri: http://localhost:8002
           predicates:
-            - Path=/api/v3/sale/**
+            - Path=/api/sale/**
           filters:
             - name: AuthFilter
 
         - id: product
           uri: http://localhost:8000
           predicates:
-            - Path=/api/v1/product/**
+            - Path=/api/product/**
           filters:
             - name: AuthFilter
 
@@ -36,14 +36,14 @@ spring:
         - id: report
           uri: http://localhost:8001
           predicates:
-            - Path=/api/v7/report/**
+            - Path=/api/report/**
           filters:
             - name: AuthFilter
 
         - id: authorization
           uri: http://localhost:8004
           predicates:
-            - Path=/api/v6/auth/**
+            - Path=/api/auth/**
           filters:
             - name: AuthFilter
 

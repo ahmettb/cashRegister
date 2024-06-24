@@ -6,7 +6,7 @@ spring:
     name: authorization
   config:
     api-endpoints:
-      authorization-url: http://localhost:8004/api/v6/auth
+      authorization-url: http://localhost:8004/api/auth
 
 
   datasource:

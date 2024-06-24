@@ -19,7 +19,6 @@ import java.util.Collection;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-
     private UserRepository userRepository;
 
     @Override

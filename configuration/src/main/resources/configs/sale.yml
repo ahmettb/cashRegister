@@ -14,7 +14,7 @@ spring:
 
   config:
     api-endpoints:
-      sale-url: http://localhost:8002/api/v3/sale
+      sale-url: http://localhost:8002/api/sale
   datasource:
     driver-class-name: org.postgresql.Driver
     url: ${db_url}

@@ -3,3 +3,4 @@ spring:
     name: sale
   config:
     import: optional:configserver:http://localhost:9000
+

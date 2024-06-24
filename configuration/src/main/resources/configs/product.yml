@@ -13,7 +13,7 @@ spring:
     name: product
   config:
     api-endpoints:
-      product-url: http://localhost:8000/api/v1/product
+      product-url: http://localhost:8000/api/product
 
   datasource:
     driver-class-name: org.postgresql.Driver

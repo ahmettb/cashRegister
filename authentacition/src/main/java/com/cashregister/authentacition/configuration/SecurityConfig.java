@@ -32,13 +32,14 @@ import org.springframework.web.client.RestTemplate;
 @AllArgsConstructor
 public class SecurityConfig {
 
-   private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
-   @Autowired
+    @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
-   @Autowired
+    @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
+
     @Bean
     @LoadBalanced
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
@@ -76,13 +77,8 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/v6/auth/**").permitAll()
-                                .requestMatchers("/api/user-management").hasAnyAuthority(ERole.ROLE_KASIYER.name())
-                                .requestMatchers("/api/v3/sale","api/v3/campaign").hasAnyAuthority(ERole.ROLE_KASIYER.name())
-                                .requestMatchers("/api/v1/product/**").hasAnyAuthority(ERole.ROLE_KASIYER.name())
-                        .requestMatchers("/api/v2/report/**").hasAnyAuthority(ERole.ROLE_KASIYER.name())
-
-                        .anyRequest().authenticated()
+                        auth.requestMatchers("/api/auth/**").permitAll()
+                                .anyRequest().authenticated()
                 );
 
         http.authenticationProvider(authenticationProvider());
