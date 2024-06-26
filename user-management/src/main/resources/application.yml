@@ -1,6 +1,6 @@
 spring:
   application:
-    name: authentacition
+    name: user-management
   config:
     import: optional:configserver:http://configuration:9000
 

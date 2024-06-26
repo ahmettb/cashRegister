@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "product",url = "http://localhost:8000",path = "/api/v1/product",configuration = FeignConif.class)
+@FeignClient(name = "product",url = "http://localhost:8000",path = "/api/product",configuration = FeignConif.class)
 public interface ProductClient {
 
 

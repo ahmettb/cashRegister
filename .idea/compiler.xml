@@ -7,10 +7,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="userManagement" />
         <module name="product" />
         <module name="sale" />
         <module name="configuration" />
+        <module name="user-management" />
         <module name="discovery" />
         <module name="report" />
         <module name="authentacition" />
@@ -27,7 +27,7 @@
       <module name="product" options="-parameters" />
       <module name="report" options="-parameters" />
       <module name="sale" options="-parameters" />
-      <module name="userManagement" options="-parameters" />
+      <module name="user-management" options="-parameters" />
     </option>
   </component>
 </project>

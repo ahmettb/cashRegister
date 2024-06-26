@@ -44,7 +44,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthentacitionResponse> login(@RequestBody LoginRequest loginRequest) throws Exception {
 
-        log.info("AuthController : login method called for user", loginRequest.getUsername());
+        log.info("AuthController :logınnnns", loginRequest.getUsername());
         return ResponseEntity.ok(authService.login(loginRequest));
 
     }

@@ -2,5 +2,5 @@ spring:
   application:
     name: sale
   config:
-    import: optional:configserver:http://localhost:9000
+    import: optional:configserver:http://configuration:9000
 

@@ -5,6 +5,7 @@ import com.cashregister.sale.error.ExceptionMessage;
 import com.cashregister.sale.exception.NotFoundProduct;
 import com.cashregister.sale.exception.StockNotEnough;
 import com.cashregister.sale.model.ShoppingList;
+import com.cashregister.sale.model.dto.CreateSaleResponse;
 import com.cashregister.sale.model.dto.SalesInfoDto;
 import com.cashregister.sale.model.dto.ShoppingItemRequestDto;
 import com.cashregister.sale.service.ISalesService;
@@ -26,7 +27,7 @@ public class SaleController {
     final ISalesService salesService;
 
     @GetMapping("getSaleInfoById/{id}")
-    public ResponseEntity<SalesInfoDto> addInfo(@PathVariable("id") long id) {
+    public ResponseEntity<SalesInfoDto> getSaleInfo(@PathVariable("id") long id) {
 
 
         return new ResponseEntity<>(salesService.getSaleInfoById(id), HttpStatus.OK);
@@ -41,7 +42,7 @@ public class SaleController {
     }
 
     @PostMapping("create-sale")
-    public ResponseEntity<?> createSale(@RequestHeader("Authorization")String token) {
+    public ResponseEntity<CreateSaleResponse> createSale(@RequestHeader("Authorization")String token) {
         return new ResponseEntity<>(salesService.createSale(token), HttpStatus.OK);
 
     }

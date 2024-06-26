@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -126,10 +127,13 @@ public class AuthService {
         });
 
         UserInfo userInfo = new UserInfo();
+        userInfo.setRole(new ArrayList<>());
         userInfo.setId(user.getId());
         userInfo.setName(user.getName());
         userInfo.setSurname(user.getSurname());
-        userInfo.setRole(userInfo.getRole());
+        user.getRoles().forEach(rol->{
+            userInfo.getRole().add(rol.getName().name());
+        });
         log.info("User info retrieved successfully for user: {}", username);
         return userInfo;
     }

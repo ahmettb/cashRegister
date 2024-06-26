@@ -19,10 +19,10 @@ public class Routes {
     public Map<String, List<String>> roleEndpoints = new HashMap<>();
 
     public Routes() {
-        saleUrl.add("/api/v3/sale/getSaleInfoById");
-        saleUrl.add("/api/v3/sale/addItemToCard");
-        saleUrl.add("api/v3/sale/create-sale");
-        report.add("/api/v7/report");
+        saleUrl.add("/api/sale/getSaleInfoById");
+        saleUrl.add("/api/sale/addItemToCard");
+        saleUrl.add("api/sale/create-sale");
+        report.add("/api/report");
         userManagementUrl.add("/api/user-management");
         roleEndpoints.put("ROLE_KASIYER", saleUrl);
         roleEndpoints.put("ROLE_ADMIN", userManagementUrl);

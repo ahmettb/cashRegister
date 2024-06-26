@@ -23,5 +23,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+      ddl: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect

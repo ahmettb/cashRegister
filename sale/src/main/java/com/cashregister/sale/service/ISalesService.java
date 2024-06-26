@@ -1,6 +1,7 @@
 package com.cashregister.sale.service;
 
 import com.cashregister.sale.model.*;
+import com.cashregister.sale.model.dto.CreateSaleResponse;
 import com.cashregister.sale.model.dto.SalesInfoDto;
 import com.cashregister.sale.model.dto.ShoppingItemRequestDto;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ public interface ISalesService {
     @Transactional
     SalesInfoDto addShoppingItemToList(List<ShoppingItemRequestDto > itemRequestDto, long shoppingId,String token);
 
-    ShoppingList createSale(String cashierToken);
+    CreateSaleResponse createSale(String cashierToken);
 
 
 }

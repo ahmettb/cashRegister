@@ -4,6 +4,7 @@ import com.cashregister.sale.exception.SaleListNotFound;
 import com.cashregister.sale.feignclient.AuthClient;
 import com.cashregister.sale.feignclient.ProductClient;
 import com.cashregister.sale.model.*;
+import com.cashregister.sale.model.dto.CreateSaleResponse;
 import com.cashregister.sale.model.dto.SaleItemResponseDto;
 import com.cashregister.sale.model.dto.SalesInfoDto;
 import com.cashregister.sale.model.dto.ShoppingItemRequestDto;
@@ -12,6 +13,7 @@ import com.cashregister.sale.repository.IShoppingListRepository;
 import com.cashregister.sale.repository.IUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,7 @@ public class SaleServiceImp implements ISalesService {
     private final AuthClient authClient;
     private final ProductClient productClient;
     private final IUserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     public SalesInfoDto getSaleInfo(long id) {
         log.info("SaleServiceImp: getSaleInfo method called with id = {}", id);
@@ -110,13 +113,19 @@ public class SaleServiceImp implements ISalesService {
     }
 
     @Override
-    public ShoppingList createSale(String cashierToken) {
+    public CreateSaleResponse createSale(String cashierToken) {
         log.info("SaleServiceImp: createSale method called with cashierToken");
         ShoppingList shoppingList = new ShoppingList();
         UserInfo userInfo = authClient.getUserInfo(cashierToken).getBody();
         shoppingList.setUser(userRepository.getUserById(userInfo.getId()));
         shoppingListRepository.save(shoppingList);
+
+        CreateSaleResponse createSaleResponse=new CreateSaleResponse();
+        createSaleResponse.setCashierName(userInfo.getName());
+        createSaleResponse.setCashierSurname(userInfo.getSurname());
+        createSaleResponse.setSaleId(shoppingList.getId());
+        createSaleResponse.setInfoMessage("New sale record created");
         log.info("SaleServiceImp: createSale method completed with new shoppingList created");
-        return shoppingList;
+        return createSaleResponse;
     }
 }

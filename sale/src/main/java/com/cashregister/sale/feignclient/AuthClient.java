@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(name = "authorization",url = "http://localhost:8500",path = "/api/v6/auth",configuration = FeignConif.class)
+@FeignClient(name = "authorization",url = "http://localhost:8004",path = "/api/auth",configuration = FeignConif.class)
 public interface AuthClient {
 
 

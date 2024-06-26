@@ -13,6 +13,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -64,7 +65,19 @@ public class ReportService {
         return salesInfoDto;
     }
 
+    public Page<SalesInfoDto> getAllList(int pageSize, int pageNumber) {
+        log.info("Entering method: getAllList with : pageSize: {}, pageNumber: {}",  pageSize, pageNumber);
+        Page<ShoppingList> list = shoppingListRepository.findAll(PageRequest.of(pageNumber, pageSize));
+        List<SalesInfoDto> salesInfoDtoList = new ArrayList<>();
 
+        list.forEach(item -> {
+            salesInfoDtoList.add(getSale(item.getId()));
+        });
+
+        Page<SalesInfoDto> salesInfoDtoPage = new PageImpl<>(salesInfoDtoList, PageRequest.of(pageNumber, pageSize), list.getTotalElements());
+        log.info("Exiting method: getAllList with pageSize: {}, pageNumber: {}", pageSize, pageNumber);
+        return salesInfoDtoPage;
+    }
 
     public SalesInfoDto getSale(long id) {
         log.info("Entering method: getSale with id: {}", id);

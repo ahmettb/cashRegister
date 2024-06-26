@@ -10,11 +10,11 @@ eureka:
 
 spring:
   application:
-    name: usermanagement
+    name: user-management
 
   config:
     api-endpoints:
-      usermanagements-url: http://localhost:8008/api/user-management
+      user-management-url: http://localhost:8008/api/user-management
   datasource:
     driver-class-name: org.postgresql.Driver
     url: ${db_url}
@@ -23,5 +23,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+      ddl: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect

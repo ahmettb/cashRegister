@@ -12,10 +12,10 @@ public class ValidatorRoute {
 
 
 List<String> openApiEndpoints=List.of(
-        "api/v6/auth/signin",
-        "api/v6/auth/signup",
-        "api/v6/auth/validate",
-        "api/v1/product"
+        "api/auth/login",
+        "api/auth/register",
+        "api/auth/validate",
+        "api/product"
 
 
 );
