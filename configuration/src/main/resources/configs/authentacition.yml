@@ -6,7 +6,7 @@ eureka:
     hostname: localhost
   client:
     service-url:
-      defaultZone: http://discovery:8761/eureka
+      defaultZone: http://localhost:8761/eureka
 
 
 spring:
@@ -19,9 +19,9 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${db_url}
-    username: ${db_username}
-    password: ${db_password}
+    url: jdbc:postgresql://localhost:5432/cashregister
+    username: postgres
+    password: 123
   jpa:
     hibernate:
       ddl-auto: update

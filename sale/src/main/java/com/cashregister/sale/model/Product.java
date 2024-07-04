@@ -21,7 +21,7 @@ public class Product {
     private String description;
     private int stockCount;
     private boolean deleted=false;
-
+private String pieceOrKg;
 
     @ManyToOne
     @JoinColumn(name = "category_id",referencedColumnName = "id")

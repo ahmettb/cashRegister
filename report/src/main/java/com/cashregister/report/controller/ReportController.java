@@ -35,8 +35,7 @@ final ReportService reportService;
         log.info("ReportController: createPdf request received with id {} ", id);
         reportService.createPdfFileSaleList(id);
 
-        return  new ResponseEntity<>(HttpStatus.OK);
-
+        return ResponseEntity.status(HttpStatus.CREATED).body("Voucher created");
     }
 
     @GetMapping("get-all-sale")

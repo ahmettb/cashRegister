@@ -13,7 +13,7 @@ public class SaleItemResponseDto {
     private double price;
 
 
-    private double count;
+    private double quantity;
 
     private double totalPrice;
 

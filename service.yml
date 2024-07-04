@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: discovery
+spec:
+  selector:
+    app: discovery  # Deployment YAML dosyasındaki matchLabels ile aynı olmalı
+  ports:
+    - protocol: TCP
+      port: 8761
+      targetPort: 8761
+  type: ClusterIP  # Servis tipi, ihtiyaca göre ayarlanabilir

@@ -42,11 +42,12 @@ public class SaleServiceImp implements ISalesService {
 
         shoppingList.getSaleItemList().forEach(shoppingItem -> {
             SaleItemResponseDto saleItemResponseDto = new SaleItemResponseDto();
-            saleItemResponseDto.setPrice(shoppingItem.getPrice());
+            saleItemResponseDto = modelMapper.map(shoppingItem, SaleItemResponseDto.class);
+            //saleItemResponseDto.setPrice(shoppingItem.getPrice());
             saleItemResponseDto.setName(shoppingItem.getProduct().getName());
             saleItemResponseDto.setType(shoppingItem.getType());
-            saleItemResponseDto.setCount(shoppingItem.getQuantity());
-            saleItemResponseDto.setTotalPrice(shoppingItem.getTotalPrice());
+            // saleItemResponseDto.setCount(shoppingItem.getQuantity());
+            //saleItemResponseDto.setTotalPrice(shoppingItem.getTotalPrice());
             salesInfoDto.getSaleItemResponseDtoList().add(saleItemResponseDto);
             salesInfoDto.setTotalPrice(salesInfoDto.getTotalPrice() + saleItemResponseDto.getTotalPrice());
         });
@@ -68,27 +69,28 @@ public class SaleServiceImp implements ISalesService {
     public SalesInfoDto addShoppingItemToList(List<ShoppingItemRequestDto> requestDtos, long shoppingId, String token) {
         log.info("SaleServiceImp: addShoppingItemToList method called with shoppingId = {}", shoppingId);
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingId).orElseThrow(() -> new SaleListNotFound("Sale list not found"));
-
         requestDtos.forEach(itemRequestDto -> {
             Product product = productClient.getProductById(itemRequestDto.getId()).getBody();
             boolean productControl = shoppingList.getSaleItemList().stream().anyMatch(item -> item.getProduct().getId() == itemRequestDto.getId());
-
             if (shoppingList.getSaleItemList().isEmpty()) {
                 ShoppingItem shoppingItem = new ShoppingItem();
                 shoppingItem.setProduct(product);
                 shoppingItem.setPrice(product.getPrice());
                 shoppingItem.setQuantity(itemRequestDto.getQuantity());
-                shoppingItem.setType(itemRequestDto.getType());
                 shoppingItem.setSalesInfo(shoppingList);
+                shoppingItem.setType(product.getPieceOrKg());
                 shoppingItem.setTotalPrice(product.getPrice() * itemRequestDto.getQuantity());
                 productClient.updateStock(product.getId(), itemRequestDto.getQuantity());
                 shoppingList.getSaleItemList().add(shoppingItem);
+                shoppingList.setTotalPrice(shoppingList.getTotalPrice() + shoppingItem.getTotalPrice());
                 shoppingItemRepository.save(shoppingItem);
             } else {
                 if (productControl) {
                     ShoppingItem shoppingItem = shoppingList.getSaleItemList().stream().filter(item -> item.getProduct().getId() == itemRequestDto.getId()).findFirst().get();
                     shoppingItem.setQuantity(shoppingItem.getQuantity() + itemRequestDto.getQuantity());
                     shoppingItem.setTotalPrice(shoppingItem.getTotalPrice() + itemRequestDto.getQuantity() * product.getPrice());
+                    shoppingList.setTotalPrice(shoppingList.getTotalPrice() + shoppingItem.getTotalPrice());
+
                     productClient.updateStock(product.getId(), itemRequestDto.getQuantity());
                     shoppingItemRepository.save(shoppingItem);
                 } else {
@@ -97,8 +99,11 @@ public class SaleServiceImp implements ISalesService {
                     shoppingItem.setPrice(product.getPrice());
                     shoppingItem.setSalesInfo(shoppingList);
                     shoppingItem.setQuantity(itemRequestDto.getQuantity());
-                    shoppingItem.setType(itemRequestDto.getType());
+                    shoppingItem.setType(product.getPieceOrKg());
+
                     shoppingItem.setTotalPrice(itemRequestDto.getQuantity() * product.getPrice());
+                    shoppingList.setTotalPrice(shoppingList.getTotalPrice() + shoppingItem.getTotalPrice());
+
                     productClient.updateStock(product.getId(), itemRequestDto.getQuantity());
                     shoppingList.getSaleItemList().add(shoppingItem);
                     shoppingItemRepository.save(shoppingItem);
@@ -120,7 +125,7 @@ public class SaleServiceImp implements ISalesService {
         shoppingList.setUser(userRepository.getUserById(userInfo.getId()));
         shoppingListRepository.save(shoppingList);
 
-        CreateSaleResponse createSaleResponse=new CreateSaleResponse();
+        CreateSaleResponse createSaleResponse = new CreateSaleResponse();
         createSaleResponse.setCashierName(userInfo.getName());
         createSaleResponse.setCashierSurname(userInfo.getSurname());
         createSaleResponse.setSaleId(shoppingList.getId());

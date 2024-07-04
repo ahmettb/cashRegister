@@ -41,7 +41,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
     private final ValidatorRoute validatorRoute;
     private final RestTemplate restTemplate;
 
-    private String jwtSecret = System.getenv("JWT_KEY");
+    private String jwtSecret ="3nD9sK0wMf7pJ6cGzA8qR5bY2eT4vU1xN7hL2wZ0vX9jQ2mW8rG6uF3eB5tY1pL0";
 
     Routes routes = new Routes();
 
@@ -82,8 +82,11 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
 
     @Override
     public GatewayFilter apply(Config config) {
+
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
+            log.info("Request received:{}",request);
+
             log.info("Request received: URI={}, Method={}", request.getURI(), request.getMethod());
 
             if (!validatorRoute.isSecureEndpoint.test(request)) {

@@ -26,7 +26,7 @@ public class SaleController {
 
     final ISalesService salesService;
 
-    @GetMapping("getSaleInfoById/{id}")
+    @GetMapping("get-sale-info/{id}")
     public ResponseEntity<SalesInfoDto> getSaleInfo(@PathVariable("id") long id) {
 
 
@@ -34,7 +34,7 @@ public class SaleController {
 
     }
 
-    @PostMapping("addItemToCard/{id}")
+    @PostMapping("add-item-to-card/{id}")
     public ResponseEntity<?> addShoppingItemToList(@RequestHeader("Authorization")String token ,@RequestBody List<ShoppingItemRequestDto > shoppingItemDto, @PathVariable("id") long id) {
         token=token.substring(7);
         return new ResponseEntity<>(salesService.addShoppingItemToList(shoppingItemDto, id,token), HttpStatus.OK);

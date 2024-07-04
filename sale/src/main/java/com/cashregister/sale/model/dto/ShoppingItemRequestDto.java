@@ -9,8 +9,6 @@ public class ShoppingItemRequestDto {
 
 
     private int quantity;
-    private String type;
-
     private long id;
 
 }

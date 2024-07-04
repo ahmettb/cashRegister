@@ -15,7 +15,8 @@ List<String> openApiEndpoints=List.of(
         "api/auth/login",
         "api/auth/register",
         "api/auth/validate",
-        "api/product"
+        "api/product",
+        "api/category"
 
 
 );

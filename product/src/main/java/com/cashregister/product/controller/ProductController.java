@@ -1,6 +1,7 @@
 package com.cashregister.product.controller;
 
 import com.cashregister.product.model.Product;
+import com.cashregister.product.model.dto.ProductResponseDto;
 import com.cashregister.product.model.dto.ProductWithCategoryDto;
 import com.cashregister.product.service.ProductServiceImp;
 import lombok.extern.log4j.Log4j2;
@@ -19,6 +20,18 @@ public class ProductController {
 
     public ProductController(ProductServiceImp productService) {
         this.productService = productService;
+    }
+
+
+    @PutMapping("update-product/{productId}")
+    public ResponseEntity<?>updateProduct(@RequestBody ProductWithCategoryDto productWithCategoryDto,@PathVariable("productId")long id)
+    {
+
+        log.info("ProductController: updateProduct request received with body {} ", productWithCategoryDto.toString());
+        productService.updateProduct(id,productWithCategoryDto);
+        return  ResponseEntity.status(HttpStatus.OK).body("Update Successfuly   ");
+
+
     }
 
     @PostMapping("add-product")
@@ -42,21 +55,28 @@ public class ProductController {
         log.info("ProductController: deleteProduct method called with id = {}", id);
         productService.deleteProduct(id);
         log.info("ProductController: deleteProduct method completed.");
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).body("Deleted Successfuly");
     }
 
     @GetMapping("get-all-product")
-    public ResponseEntity<List<Product>> getAll() {
+    public ResponseEntity<List<ProductResponseDto>> getAll() {
         log.info("ProductController: getAll method called.");
-        List<Product> productList = productService.getAllProduct();
+        List<ProductResponseDto> productList = productService.getAllProduct();
         log.info("ProductController: getAll method returned {} products.", productList.size());
         return ResponseEntity.ok(productList);
     }
+    @GetMapping("get-product-all-info/{id}")
+    public ResponseEntity<Product> getProductAllInfo(@PathVariable("id") long id) {
+        log.info("ProductController: getProductAllInfo method called with id = {}", id);
+        Product product = productService.getProductAllInfo(id);
+        log.info("ProductController: getProductAllInfo method returned product with id = {}", id);
+        return ResponseEntity.ok(product);
+    }
 
     @GetMapping("get-product-byId/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") long id) {
+    public ResponseEntity<ProductResponseDto> getProductById(@PathVariable("id") long id) {
         log.info("ProductController: getProductById method called with id = {}", id);
-        Product product = productService.getProductById(id);
+        ProductResponseDto product = productService.getProductById(id);
         log.info("ProductController: getProductById method returned product with id = {}", id);
         return ResponseEntity.ok(product);
     }

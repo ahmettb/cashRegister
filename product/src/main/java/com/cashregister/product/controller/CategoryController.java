@@ -18,21 +18,21 @@ public class CategoryController {
 
     final ICategoryService categoryService;
 
-    @PostMapping(value = "save", consumes = {"application/json"})
+    @PostMapping(value = "add", consumes = {"application/json"})
     public ResponseEntity<String> saveCategory(@RequestBody Category category) {
         log.info("CategoryController: saveCategory method called with category = {}", category);
 
         try {
             categoryService.addCategory(category);
             log.info("CategoryController: saveCategory method completed successfully for category = {}", category);
-            return ResponseEntity.ok("Success");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Category: " + category.getCategoryName() + " added");
         } catch (Exception e) {
             log.error("CategoryController: Error in saveCategory method for category = {}. Error: {}", category, e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 
-    @GetMapping("getAll")
+    @GetMapping("get-all")
     public ResponseEntity<List<Category>> getAllCategory() {
         log.info("CategoryController: getAllCategory method called");
 
@@ -44,5 +44,22 @@ public class CategoryController {
             log.error("CategoryController: Error in getAllCategory method. Error: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @DeleteMapping("delete/{categoryId}")
+    public ResponseEntity<?> deleteCategory(@PathVariable("categoryId") long id) {
+        log.info("CategoryController: deleteCategory method called");
+
+        try {
+            categoryService.deleteCategory(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Deleted Successfuly");
+
+        } catch (Exception e) {
+            log.error("CategoryController: Error in deleteCategory method. Error: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
+        }
+
+
     }
 }

@@ -1,5 +1,6 @@
 package com.cashregister.product.service;
 
+import com.cashregister.product.exception.CategoryNotFound;
 import com.cashregister.product.model.Category;
 import com.cashregister.product.repository.ICategoryRepository;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,16 @@ import java.util.List;
 public class CategoryServiceImp implements ICategoryService {
 
     final ICategoryRepository categoryRepository;
+
+    @Override
+    public void deleteCategory(long id) {
+        log.info("CategoryServiceImp: deleteCategory method called");
+        Category category = categoryRepository.findCategoryByIdAndDeletedFalse(id).orElseThrow(() -> new CategoryNotFound("Category Not Found"));
+        category.setDeleted(true);
+        categoryRepository.save(category);
+        log.info("CategoryServiceImp: deleteCategory method completed successfully for category = {}", category);
+
+    }
 
     @Override
     public List<Category> getAllCategory() {
@@ -42,5 +53,12 @@ public class CategoryServiceImp implements ICategoryService {
             log.error("CategoryServiceImp: Error in addCategory method for category = {}. Error: {}", category, e.getMessage());
             throw e;
         }
+    }
+
+    @Override
+    public Category getById(long id) {
+
+        return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFound("Category Not Found"));
+
     }
 }

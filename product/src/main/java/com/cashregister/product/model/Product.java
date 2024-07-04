@@ -3,6 +3,7 @@ package com.cashregister.product.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "product")
+
 @Getter
 @Setter
 public class Product {
@@ -23,6 +25,7 @@ public class Product {
     private String description;
     private int stockCount;
     private boolean deleted=false;
+    private String pieceOrKg;
 
     @ManyToOne
     @JoinColumn(name = "category_id",referencedColumnName = "id")

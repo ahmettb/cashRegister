@@ -22,6 +22,8 @@ public class Category {
 
     private String categoryName;
 
+    private boolean deleted=false;
+
 //    @OneToMany(mappedBy = "category")
 //    @JsonBackReference
 //    private List<Product> productList;

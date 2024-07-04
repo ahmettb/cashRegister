@@ -2,6 +2,7 @@ package com.cashregister.sale.feignclient;
 
 import com.cashregister.sale.config.FeignConif;
 import com.cashregister.sale.model.Product;
+import com.cashregister.sale.model.ProductResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface ProductClient {
 
 
-    @GetMapping("get-product-byId/{id}")
+    @GetMapping("get-product-all-info/{id}")
      ResponseEntity<Product> getProductById(@PathVariable("id") long id);
 
     @PutMapping("update-stock/{id}/{count}")

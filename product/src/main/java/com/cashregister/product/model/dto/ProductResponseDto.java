@@ -1,20 +1,20 @@
 package com.cashregister.product.model.dto;
 
-
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
-public class ProductWithCategoryDto {
+public class ProductResponseDto {
+
 
     private String name;
     private double price;
-    private  String description;
-    private  long categoryId;
-    private  int stock;
+    private String description;
+    private int stockCount;
+    private String category;
+    private String pieceOrKg;
+
 
 
 

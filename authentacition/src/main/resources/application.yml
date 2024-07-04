@@ -2,5 +2,5 @@ spring:
   application:
     name: authentacition
   config:
-    import: optional:configserver:http://configuration:9000
+    import: optional:configserver:http://localhost:9000
 

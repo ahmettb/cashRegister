@@ -1,7 +1,6 @@
 package com.cashregister.product.exception;
 
 
-
 import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +21,7 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(exception.getMessage());
     }
+
     @ExceptionHandler({CategoryNotFound.class})
     public ResponseEntity<Object> handleCategoryNotFoundException(ProductNotFound exception) {
         log.error("Category not found ");
@@ -37,6 +37,7 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(exception.getMessage());
     }
+
     @ExceptionHandler({RuntimeException.class})
     public ResponseEntity<Object> handleRuntimeException(RuntimeException exception) {
         return ResponseEntity
@@ -50,7 +51,7 @@ public class GlobalExceptionHandler {
 
         {
             return ResponseEntity
-                    .status(HttpStatus.ALREADY_REPORTED)
+                    .status(HttpStatus.CONFLICT)
                     .body(exception.getMessage());
 
         }

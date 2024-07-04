@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Component
 @Log4j2
 public class   JwtUtils {
-    private String jwtSecret=System.getenv("JWT_KEY");
+    private String jwtSecret="3nD9sK0wMf7pJ6cGzA8qR5bY2eT4vU1xN7hL2wZ0vX9jQ2mW8rG6uF3eB5tY1pL0";
 
     private long jwtExpirationMs =10000000; // 30 dakika
     public String generateJwtToken(Authentication authentication, Set<Role> roles) {

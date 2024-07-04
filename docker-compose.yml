@@ -2,7 +2,7 @@
 
   services:
     configuration:
-      image: configuration  # Dockerfile'dan oluşturduğunuz image adı
+      image: configuration:latest
       container_name: configuration
       ports:
         - "9000:9000"
@@ -13,7 +13,7 @@
         - DB_PASSWORD=123
 
     discovery:
-      image: discovery  # Dockerfile'dan oluşturduğunuz image adı
+      image: discovery:latest # Dockerfile'dan oluşturduğunuz image adı
       container_name: discovery
       ports:
         - "8761:8761"
@@ -26,7 +26,7 @@
         - configuration
 
     gateway:
-      image: gateway  # Dockerfile'dan oluşturduğunuz image adı
+      image: gateway:latest # Dockerfile'dan oluşturduğunuz image adı
       container_name: gateway
       ports:
         - "8500:8500"
@@ -43,7 +43,7 @@
         - discovery
 
     sale:
-      image: sale  # Dockerfile'dan oluşturduğunuz image adı
+      image: sale:latest  # Dockerfile'dan oluşturduğunuz image adı
       container_name: sale
       ports:
         - "8002:8002"
@@ -61,7 +61,7 @@
 
 
     authentacition:
-      image: authentacition  # Dockerfile'dan oluşturduğunuz image adı
+      image: authentacition:latest  # Dockerfile'dan oluşturduğunuz image adı
       container_name: authentacition
       ports:
         - "8004:8004"
@@ -80,7 +80,7 @@
 
 
     user-management:
-      image: user-management  # Dockerfile'dan oluşturduğunuz image adı
+      image: user-management:latest  # Dockerfile'dan oluşturduğunuz image adı
       container_name: user-management
       ports:
         - "8008:8008"
@@ -98,7 +98,7 @@
 
 
     product:
-      image: product  # Dockerfile'dan oluşturduğunuz image adı
+      image: product:latest # Dockerfile'dan oluşturduğunuz image adı
       container_name: product
       ports:
         - "8000:8000"
@@ -115,7 +115,7 @@
         - discovery
 
     report:
-      image: report  # Dockerfile'dan oluşturduğunuz image adı
+      image: report:latest # Dockerfile'dan oluşturduğunuz image adı
       container_name: report
       ports:
         - "8001:8001"
@@ -148,7 +148,7 @@
         - "5432:5432"
 
     pgadmin:
-      image: dpage/pgadmin4
+      image: dpage/pgadmin4:latest
       container_name: pgadmin
       environment:
         PGADMIN_DEFAULT_EMAIL: "admin@admin.com"

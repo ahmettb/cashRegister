@@ -12,6 +12,8 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +32,8 @@ public class ReportService {
 
     final SaleRepository shoppingListRepository;
     final ModelMapper modelMapper;
+
+
 
     public List<SalesInfoDto> getAllSales() {
         log.info("Entering method: getAllSales");
@@ -114,7 +118,7 @@ public class ReportService {
         document.addPage(page);
 
         PDPageContentStream contentStream = new PDPageContentStream(document, page);
-        PDType0Font font = PDType0Font.load(document, new File("path/to/tahoma.ttf"));
+        PDType0Font font = PDType0Font.load(document, new File("C:\\Windows\\Fonts\\Tahoma.ttf"));
 
         contentStream.beginText();
         contentStream.setFont(font, 12);
@@ -125,24 +129,28 @@ public class ReportService {
         String formattedDate = formatter.format(salesInfoDto.getSaleDate());
 
         // Title
-        contentStream.showText("FİŞ NUMARASI : " + id);
+        contentStream.showText("Voucher ID : " + id);
         contentStream.newLine();
         contentStream.newLine();
-        contentStream.showText("TARİH : " + formattedDate);
+        contentStream.showText("Date : " + formattedDate);
         contentStream.newLine();
-        contentStream.showText("SAAT  : " + salesInfoDto.getSaleDate().getHours() + ":" + salesInfoDto.getSaleDate().getMinutes());
+        contentStream.showText("Hour  : " + salesInfoDto.getSaleDate().getHours() + ":" + salesInfoDto.getSaleDate().getMinutes());
         contentStream.newLine();
-        contentStream.showText("KASİYER: " + salesInfoDto.getCashierName() + " " + salesInfoDto.getCashierSurname());
+        contentStream.showText("Cashier: " + salesInfoDto.getCashierName() + " " + salesInfoDto.getCashierSurname());
         contentStream.newLine();
         contentStream.showText("----------------------------------------");
         contentStream.newLine();
-
+        contentStream.newLine();
+        contentStream.showText("PRODUCTS");
+        contentStream.newLine();
+        contentStream.showText("----------------------------------------");
+        contentStream.newLine();
         // Items
         List<SaleItemResponseDto> items = salesInfoDto.getSaleItemResponseDtoList();
         for (SaleItemResponseDto item : items) {
             contentStream.showText(item.getName() + " (" + item.getQuantity() + " " + item.getType() + " X " + item.getPrice() + " TL)");
             contentStream.newLine();
-            contentStream.showText("Toplam Fiyat: " + item.getTotalPrice() + " TL");
+            contentStream.showText("Total Price: " + item.getTotalPrice() + " TL");
             contentStream.newLine();
             contentStream.newLine();
         }
@@ -150,11 +158,10 @@ public class ReportService {
         // Total
         contentStream.showText("----------------------------------------");
         contentStream.newLine();
-        contentStream.showText("GENEL TOPLAM: " + salesInfoDto.getTotalPrice() + " TL");
+        contentStream.showText("Grand Total: " + salesInfoDto.getTotalPrice() + " TL");
         contentStream.newLine();
         contentStream.showText("----------------------------------------");
         contentStream.newLine();
-        contentStream.showText("KDV FİŞİ DEĞİLDİR");
         contentStream.endText();
         contentStream.close();
 

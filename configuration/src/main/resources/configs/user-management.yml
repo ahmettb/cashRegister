@@ -17,9 +17,9 @@ spring:
       user-management-url: http://localhost:8008/api/user-management
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${db_url}
-    username: ${db_username}
-    password: ${db_password}
+    url: jdbc:postgresql://localhost:5432/cashregister
+    username: postgres
+    password: 123
   jpa:
     hibernate:
       ddl-auto: update

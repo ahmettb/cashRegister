@@ -13,35 +13,41 @@ spring:
           enabled: true
       routes:
         - id: sale
-          uri: http://sale:8002
+          uri: http://localhost:8002
           predicates:
             - Path=/api/sale/**
           filters:
             - name: AuthFilter
 
         - id: product
-          uri: http://product:8000
+          uri: http://localhost:8000
           predicates:
             - Path=/api/product/**
           filters:
             - name: AuthFilter
+        - id: category
+          uri: http://localhost:8000
+          predicates:
+            - Path=/api/category/**
+          filters:
+            - name: AuthFilter
 
         - id: user-management
-          uri: http://user-management:8008
+          uri: http://localhost:8008
           predicates:
             - Path=/api/user-management/**
           filters:
             - name: AuthFilter
 
         - id: report
-          uri: http://report:8001
+          uri: http://localhost:8001
           predicates:
             - Path=/api/report/**
           filters:
             - name: AuthFilter
 
         - id: authentacition
-          uri: http://authentacition:8004
+          uri: http://localhost:8004
           predicates:
             - Path=/api/auth/**
           filters:
@@ -57,7 +63,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://discovery:8761/eureka
+      defaultZone: http://localhost:8761/eureka
 
 
 
